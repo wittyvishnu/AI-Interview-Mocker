@@ -39,11 +39,11 @@ export default function HomeScreen() {
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image 
-              src="/logo2.svg" 
+              src="/pinit-logo.svg" 
               alt="AI Mock Interviewer Logo" 
               width={40} 
               height={40}
-              className="h-10 w-auto"
+              className="h-10 w-auto scale-150 ml-5"
             />
             <span className="font-bold text-xl text-slate-800"></span>
           </div>
@@ -200,7 +200,7 @@ export default function HomeScreen() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Image 
-                  src="/logo2.svg" 
+                  src="/pinit-logo.svg" 
                   alt="AI Mock Interviewer Logo" 
                   width={32} 
                   height={32}

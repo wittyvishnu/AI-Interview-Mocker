@@ -13,8 +13,8 @@ function Header() {
     }, [path])
 
     return (
-        <div className='flex justify-between items-center bg-secondary shadow-sm p-4'>
-            <Image src={'/logo2.svg'} alt="Logo" width={150} height={100} />
+        <div className='flex justify-between items-center bg-secondary shadow-sm px-4 py-2'>
+            <Image src={'/pinit-logo.svg'} alt="Logo" width={150} height={100} className='scale-130 ml-4' />
             <ul className='hidden md:flex gap-6'>
                 <li
                     onClick={() => router.push('/dashboard')}
