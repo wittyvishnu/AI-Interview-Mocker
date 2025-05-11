@@ -1,49 +1,107 @@
 "use client"
-import React, { useEffect } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import { UserButton } from '@clerk/nextjs'
 import { usePathname, useRouter } from 'next/navigation'
+import { Menu } from 'lucide-react'
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
-function Header() {
-    const path = usePathname();
-    const router = useRouter();
+const Header = () => {
+  const pathname = usePathname()
+  const router = useRouter()
 
-    useEffect(() => {
-        console.log(path)
-    }, [path])
+  const navLinks = [
+    { path: '/dashboard', label: 'Dashboard' },
+    { path: '/dashboard/questions', label: 'Questions' },
+    { path: '/dashboard/upgrade', label: 'Upgrade' },
+    { path: '/dashboard/how-it-works', label: 'How it works' }
+  ]
 
-    return (
-        <div className='flex justify-between items-center bg-secondary shadow-sm px-4 py-2'>
-            <Image src={'/pinit-logo.svg'} alt="Logo" width={150} height={100} className='scale-130 ml-4' />
-            <ul className='hidden md:flex gap-6'>
-                <li
-                    onClick={() => router.push('/dashboard')}
-                    className={`hover:text-primary hover:font-bold transition-all cursor-pointer ${path === '/dashboard' ? 'text-primary font-bold' : ''}`}
-                >
-                    Dashboard
-                </li>
-                <li
-                    onClick={() => router.push('/dashboard/questions')}
-                    className={`hover:text-primary hover:font-bold transition-all cursor-pointer ${path === '/dashboard/questions' ? 'text-primary font-bold' : ''}`}
-                >
-                    Questions
-                </li>
-                <li
-                    onClick={() => router.push('/dashboard/upgrade')}
-                    className={`hover:text-primary hover:font-bold transition-all cursor-pointer ${path === '/dashboard/upgrade' ? 'text-primary font-bold' : ''}`}
-                >
-                    Upgrade
-                </li>
-                <li
-                    onClick={() => router.push('/dashboard/how-it-works')}
-                    className={`hover:text-primary hover:font-bold transition-all cursor-pointer ${path === '/dashboard/how-it-works' ? 'text-primary font-bold' : ''}`}
-                >
-                    How it works ?
-                </li>
-            </ul>
-            <UserButton />
+  return (
+    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-sm border-b border-slate-200">
+      <div className="container flex h-16 items-center justify-between px-4">
+        {/* Desktop Logo - Hidden on mobile */}
+        <div className="hidden md:flex items-center">
+          <Image 
+            src="/pinit-logo.svg" 
+            alt="PinIT Logo" 
+            width={120} 
+            height={40}
+            className="cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => router.push('/dashboard')}
+          />
         </div>
-    )
+
+        {/* Mobile Menu Button - Hidden on desktop */}
+        <div className="md:hidden flex items-center">
+          <Sheet>
+            <SheetTrigger className="p-2 rounded-md hover:bg-slate-100 transition-colors">
+              <Menu className="h-6 w-6 text-slate-700" />
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px]">
+              <div className="flex flex-col h-full pt-8">
+                <div className="mb-8">
+                  <Image 
+                    src="/pinit-logo.svg" 
+                    alt="PinIT Logo" 
+                    width={120} 
+                    height={40}
+                    className="mx-auto hover:opacity-80 transition-opacity"
+                  />
+                </div>
+                <nav className="flex-1">
+                  <ul className="space-y-4">
+                    {navLinks.map((link) => (
+                      <li key={link.path}>
+                        <button
+                          onClick={() => router.push(link.path)}
+                          className={`w-full text-left px-4 py-3 rounded-lg transition-all
+                            ${
+                              pathname === link.path
+                                ? 'bg-primary/10 text-primary font-medium'
+                                : 'hover:bg-slate-100 text-slate-700'
+                            }`}
+                        >
+                          {link.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {/* Desktop Navigation - Hidden on mobile */}
+        <nav className="hidden md:flex items-center space-x-2">
+          {navLinks.map((link) => (
+            <button
+              key={link.path}
+              onClick={() => router.push(link.path)}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all
+                ${
+                  pathname === link.path
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-slate-600 hover:text-primary hover:bg-slate-100'
+                }`}
+            >
+              {link.label}
+            </button>
+          ))}
+        </nav>
+
+        {/* User Button */}
+        <div className="flex items-center">
+          <UserButton afterSignOutUrl="/" />
+        </div>
+      </div>
+    </header>
+  )
 }
 
 export default Header
